@@ -1,5 +1,23 @@
 <script>
+	import page from 'page';
 	export let name;
+
+	page('/', index);
+	page('/user', user);
+	page('*', notFound);
+	page();
+
+	function index() {
+		console.log('index');
+	}
+
+	function user() {
+		console.log('user');
+	}
+
+	function notFound() {
+		console.log('not found');
+	}
 </script>
 
 <main>
