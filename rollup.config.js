@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import {routify} from '@sveltech/routify'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -23,6 +24,11 @@ export default {
 			css: css => {
 				css.write('public/build/bundle.css');
 			}
+		}),
+
+		routify({
+			debug: true,
+			unusedPropWarnings: true
 		}),
 
 		// If you have external dependencies installed from
@@ -49,7 +55,7 @@ export default {
 		production && terser()
 	],
 	watch: {
-		clearScreen: false
+		clearScreen: true
 	}
 };
 

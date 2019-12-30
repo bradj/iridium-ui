@@ -1,48 +1,6 @@
 <script>
-	import page from 'page';
-	export let name;
-
-	page('/', index);
-	page('/user', user);
-	page('*', notFound);
-	page();
-
-	function index() {
-		console.log('index');
-	}
-
-	function user() {
-		console.log('user');
-	}
-
-	function notFound() {
-		console.log('not found');
-	}
+  import { Router } from "@sveltech/routify";
+  import { routes } from "@sveltech/routify/tmp/routes";
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+<Router {routes} />
