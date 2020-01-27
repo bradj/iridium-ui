@@ -1,30 +1,36 @@
 <script>
-  import { url } from '@sveltech/routify'
+    import { url } from '@sveltech/routify'
+    import { onMount } from 'svelte';
+    import Log from 'lib/log';
+    import Store from 'lib/store';
 
-  let menuIsVisible = false;
-  const activeClass = "is-active"
-  let burgerStyle = "navbar-burger burger";
-  let menuStyle = "navbar-menu";
+    const activeClass = "is-active";
+    let activeSession = false;
+    let burgerStyle = "navbar-burger burger";
+    let menuStyle = "navbar-menu";
 
-  function burgerClick() {
-      let idx = burgerStyle.indexOf(activeClass);
+    Store.activeSession.subscribe(value => {
+        Log.debug('activeSession sub', value);
+        activeSession = value === true;
+    });
 
-      if (idx > -1) {
-          hideMenus();
-      } else {
-          showMenus();
-      }
-  }
+    function burgerClick() {
+        if (burgerStyle.indexOf(activeClass) > -1) {
+            hideMenus();
+        } else {
+            showMenus();
+        }
+    }
 
-  function hideMenus() {
-      burgerStyle = burgerStyle.replace(activeClass, '');
-      menuStyle = menuStyle.replace(activeClass, '');
-  }
+    function hideMenus() {
+        burgerStyle = burgerStyle.replace(activeClass, '');
+        menuStyle = menuStyle.replace(activeClass, '');
+    }
 
-  function showMenus() {
-      burgerStyle = `${burgerStyle} ${activeClass}`;
-      menuStyle = `${menuStyle} ${activeClass}`;
-  }
+    function showMenus() {
+        burgerStyle = `${burgerStyle} ${activeClass}`;
+        menuStyle = `${menuStyle} ${activeClass}`;
+    }
 </script>
 
 <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
@@ -50,12 +56,21 @@
         <div class="navbar-end">
         <div class="navbar-item">
             <div class="buttons">
-            <a class="button is-primary" href={$url('/admin')}>
-                <strong>Admin</strong>
-            </a>
-            <a class="button" href={$url('/user')}>
-                Profile
-            </a>
+                {#if activeSession}
+                    <a class="button is-primary" href={$url('/admin')}>
+                        <strong>Admin</strong>
+                    </a>
+                    <a class="button" href={$url('/user')}>
+                        Profile
+                    </a>
+                    <a class="button" href={$url('/logout')}>
+                        Logout
+                    </a>
+                {:else}
+                    <a class="button" href={$url('/login')}>
+                        Login
+                    </a>
+                {/if}
             </div>
         </div>
         </div>
