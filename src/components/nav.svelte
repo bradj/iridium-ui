@@ -1,8 +1,9 @@
 <script>
-    import { url } from '@sveltech/routify'
+    import { url, goto } from '@sveltech/routify'
     import { onMount } from 'svelte';
     import Log from 'lib/log';
     import Store from 'lib/store';
+    import Iridium from 'lib/api'
 
     const activeClass = "is-active";
     let activeSession = false;
@@ -30,6 +31,17 @@
     function showMenus() {
         burgerStyle = `${burgerStyle} ${activeClass}`;
         menuStyle = `${menuStyle} ${activeClass}`;
+    }
+
+    async function logout() {
+        let err = await Iridium.logout();
+
+        if (!err) {
+            $goto('/');
+            return;
+        }
+
+        Log.debug(`Login error`, err);
     }
 </script>
 
@@ -60,12 +72,15 @@
                     <a class="button is-primary" href={$url('/admin')}>
                         <strong>Admin</strong>
                     </a>
+                    <a class="button" href={$url('/upload')}>
+                        Upload
+                    </a>
                     <a class="button" href={$url('/user')}>
                         Profile
                     </a>
-                    <a class="button" href={$url('/logout')}>
+                    <button class="button is-success" on:click={logout}>
                         Logout
-                    </a>
+                    </button>
                 {:else}
                     <a class="button" href={$url('/login')}>
                         Login
